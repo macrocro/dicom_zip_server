@@ -1,0 +1,32 @@
+<h1>Listing examinations</h1>
+
+<table>
+  <tr>
+    <th>Study</th>
+    <th>Name</th>
+    <th>Voltage</th>
+    <th>Current</th>
+    <th>Exposure</th>
+  </tr>
+
+  <% @examinations.each do |examination| %>
+  <% unless @study and @study != examination.study %>
+  <tr>
+    <td><%= link_to examination.study, :action => 'index', :study => examination.study %></td>
+    <td><%= examination.name %></td>
+    <td><%= examination.voltage %></td>
+    <td><%= examination.current %></td>
+    <td><%= examination.exposure %></td>
+    <td><%= link_to 'Show', examination %></td>
+    <td><%= link_to 'Edit', edit_examination_path(examination) %></td>
+    <td><%= link_to 'Destroy', examination, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+  <% end %>
+  <% end %>
+</table>
+
+<% if @mean_exposure %>
+<br /><%= "Mean exposure: #{@mean_exposure}" %><br />
+<% end %>
+<br />
+<%= link_to 'Show all', examinations_path %>

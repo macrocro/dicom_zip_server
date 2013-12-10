@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  study: MyString
+  name: MyString
+  voltage: MyString
+  current: MyString
+  exposure: MyString
+
+two:
+  study: MyString
+  name: MyString
+  voltage: MyString
+  current: MyString
+  exposure: MyString
