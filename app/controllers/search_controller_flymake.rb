@@ -32,26 +32,18 @@ class SearchController < ApplicationController
 
     create_zip_path = zip_folder + series + ".zip"
 
-    command = "zip "+ create_zip_path +files
+    command = "zip -j "+ create_zip_path +files
+
+    # logger.debug create_zip_path
+    # logger.debug command
 
     `#{command}`
 
-    #stat = File::stat(create_zip_path)
-    # response.headers['Content-type'] = 'application/zip'
+    stat = File::stat(create_zip_path)
+
     response.headers['Access-Control-Allow-Origin'] = '*'
 
-    #logger.debug File.read(create_zip_path
-    logger.debug create_zip_path
-    logger.debug File.read(create_zip_path)
+    send_file(create_zip_path, :filename => series+'.zip', :length => stat.size)
 
-    # send_file(File.read(create_zip_path), :filename => series+'.zip')
-
-    #logger.debug files
-
-    # respond_to do |format|
-    #   format.json { render :json => "hello", callback: params[:callback] }
-    # end
-
-    render :nothing => true
   end
 end
