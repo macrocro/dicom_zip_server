@@ -17,6 +17,7 @@
 
 /config/database.yml
 /dicomdir/*.dcm
+/dicomdir/*
 /dicomdir/zip/*.zip
 !/dicomdir/.gitkeep
 !/dicomdir/zip/.gitkeep

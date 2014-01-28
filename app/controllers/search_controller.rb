@@ -3,32 +3,36 @@ class SearchController < ApplicationController
     type = params[:type]
 
     if type == "name"
-      @examination = Examination.select(type).uniq
+      # @examination = Dicom.select(type).uniq
     elsif type == "series"
-      type = "series_description"
-      @examination = Examination.select(type).uniq
+      type = "SeriesDesc"
+      @dicom_series = DicomSeries.select(type).uniq
     else
-      @examination = Examination.all
+      @dicom_series = DicomSeries.all
     end
 
     respond_to do |format|
-      format.json { render :json => @examination, callback: params[:callback] }
+      format.json { render :json => @dicom_series, callback: params[:callback] }
     end
   end
 
   def getZip
     series = params[:series]
 
-    examination = Examination.where("series_description = ?", series).select("file_path")
+    # dicom_series = DicomSeries.where("SeriesDesc = ?",series).select("SeriesInst")
+
+    dicom_series = DicomImages.joins("LEFT OUTER JOIN `DICOMSeries` ON `DICOMSeries`.`SeriesInst` = `DICOMImages`.`SeriesInst`").where("`DICOMSeries`.`SeriesDesc` = ?", series).select("`DICOMImages`.`ObjectFile`")
 
     #logger.debug (examination.inspect)
 
     files = ""
-    examination.each do |obj|
-      files += " " + obj.file_path
+    dicom_series.each do |obj|
+      files += " " + "/usr/lib/cgi-bin/data/" + obj.ObjectFile
     end
 
-    zip_folder = Rails.root.join("dicomdir").join("zip").to_s + "/"
+    #logger.debug files.inspect
+
+    zip_folder = Rails.root.join("dicomdir").to_s + "/"
 
     create_zip_path = zip_folder + series + ".zip"
 
